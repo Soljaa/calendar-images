@@ -1,11 +1,13 @@
 from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.chrome import ChromeType
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
 from selenium.common import StaleElementReferenceException, TimeoutException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
-from selenium.webdriver.chrome.options import Options
 
-import chromedriver_autoinstaller
 import time
 
 
@@ -35,11 +37,30 @@ def click_next_month(driver):
 
 
 def main():
-    options = Options()
-    driver = webdriver.Chrome(options=options)
+    # to run locally on windows use this
+    # chrome_service = Service(ChromeDriverManager().install())
+
+    # using chromium on ubuntu in actions
+    chrome_service = Service(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install())
+
+    chrome_options = Options()
+    options = [
+        "--headless",
+        "--disable-gpu",
+        "--window-size=960,1080",
+        "--ignore-certificate-errors",
+        "--disable-extensions",
+        "--no-sandbox",
+        "--disable-dev-shm-usage"
+    ]
+    for option in options:
+        chrome_options.add_argument(option)
+
+    driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
 
     url = "https://www.airbnb.com.br/rooms/52668572#availability-calendar"
     driver.get(url)
+
     # eventual popup
     try:
         time.sleep(0.5)
@@ -72,5 +93,4 @@ def main():
 
 
 if __name__ == '__main__':
-    chromedriver_autoinstaller.install()
     main()
