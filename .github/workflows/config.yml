@@ -22,14 +22,17 @@ jobs:
         with:
           python-version: '3.11'
           
-      - name: Installed package list
-        run: apt list --installed
-      - name: Remove Chrome
-        run: sudo apt purge google-chrome-stable
-      - name: Remove default Chromium
-        run: sudo apt purge chromium-browser
-      - name: Install a new Chromium
+      - name: Cache Chromium installation
+        uses: actions/cache@v4
+        with:
+          path: /usr/bin/chromium-browser
+          key: ${{ runner.os }}-chromium-${{ hashFiles('path/to/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-chromium-
+
+      - name: Install Chromium
         run: sudo apt install -y chromium-browser
+        if: steps.cache.outputs.cache-hit != 'true'
 
       - name: Install dependencies
         run: |
