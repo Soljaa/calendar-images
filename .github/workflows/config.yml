@@ -25,7 +25,7 @@ jobs:
       - name: Cache Chromium installation
         uses: actions/cache@v4
         with:
-          path: /usr/bin/chromium-browser
+          path: /usr/bin
           key: ${{ runner.os }}-chromium-${{ hashFiles('path/to/requirements.txt') }}
           restore-keys: |
             ${{ runner.os }}-chromium-
