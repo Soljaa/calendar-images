@@ -73,10 +73,10 @@ def main():
 
     # cookies warning dismiss
     time.sleep(0.5)
-    WebDriverWait(driver, 10).until(ec.presence_of_element_located((By.CLASS_NAME, 'iv91188')))
+    WebDriverWait(driver, 10).until(ec.presence_of_element_located((By.CLASS_NAME, 'f1hzc007')))
     time.sleep(0.5)
-    show_tables_btn = driver.find_element(By.CLASS_NAME, 'iv91188')
-    show_tables_btn.click()
+    cookies = driver.find_element(By.CLASS_NAME, 'f1hzc007')
+    cookies.click()
 
     print_tables(driver, "0")
     click_next_month(driver)
